@@ -1,28 +1,37 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="registree">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css" />
 
     <title>RegisTree</title>
   </head>
-  <body ng-app="registree" ng-controller="registreeController">
-    <div class="container table-responsive">
-      <hr>
-      <div class="clearfix mb-2">
-        <h4 class="float-left">Usuários</h4>
-        <button type="button" class="btn btn-info btn-sm  float-right" data-toggle="modal" data-target="#userModal" ng-click="scopeClear()">Novo Usuário</button>
+  <body ng-controller="registreeController" class="bg-light pt-5">
+    <nav class="navbar bg-white fixed-bottom border border-left-0 border-right-0">
+      <a class="navbar-brand text-primary" href="#">RegisTree</a>
+      <div class="float-right">
+          <p class="m-0">Criado por Augusto Lucas :)</p>
+          <p class="font-weight-light m-0">Todos os direitos reservados.</p>
+      </div>
+     
+           
+    </nav>
+    
+    <div class="main container w-50 h-50 table-responsive border border-secondary rounded bg-white">
+      
+      <div class="clearfix mt-3 mb-3">
+        <h4 class="float-left text-info">Usuários</h4>
+        <button type="button" class="btn btn-info btn-sm float-right" data-toggle="modal" data-target="#userModal" ng-click="formClear(form)">Novo Usuário</button>
       </div>
       
       <!-- Alert Message -->
-      <div class="alert alert-success" ng-if="message">
-        <a href="#" class="close" ng-click="clearMessage()">&times;</a>
+      <div class="alert alert-success zindex-popover" ng-show="isVisible">
+        <!--<a href="#" class="close" data-dismiss="div" ng-click="clearMessage()">&times;</a>-->
         {{message}}
       </div>
 
@@ -62,36 +71,50 @@
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-              <form name="form" ng-submit="saveUser(form.$valid)" novalidate>
+              <form id="form" name="form" ng-submit="saveUser(form.$valid)" novalidate>
                 <div class="form-row">
                       <div class="form-group col-sm-4">
-                        <input id="name" name="name" type="text" ng-minlength="3" class="form-control form-control-sm" ng-model="userForm.name" placeholder="Nome" required />
+                        <input id="name" name="name" type="text" class="form-control form-control-sm" ng-model="userForm.name" placeholder="Nome" ng-class="{'is-invalid' : (form.name.$error.required && !form.name.$pristine) || (form.name.$error.required && submitted)}" required />
+                        <p ng-show="(form.name.$error.required && !form.name.$pristine) || submitted" class="form-text invalid-feedback m-0">Nome é obrigatório.</p>
                       </div>
                       <div class="form-group col-sm-8">
-                        <input id="lastname" type="text" class="form-control form-control-sm" ng-model="userForm.lastname" placeholder="Sobrenome" required />
+                        <input id="lastname" name="lastname" type="text" class="form-control form-control-sm" ng-model="userForm.lastname" placeholder="Sobrenome" ng-class="{'is-invalid' : (form.lastname.$error.required && !form.lastname.$pristine) || (form.lastname.$error.required && submitted)}" required />
+                        <p ng-show="(form.lastname.$error.required && !form.lastname.$pristine) || submitted" class="form-text invalid-feedback m-0">Sobrenome é obrigatório.</p>
                       </div>
                       <div class="form-group col-sm-8">
-                        <input id="email" type="email" class="form-control form-control-sm" ng-model="userForm.email" placeholder="E-mail" required />
+                        <input id="email" name="email" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control form-control-sm" ng-model="userForm.email" placeholder="E-mail" 
+                          ng-class="{'is-invalid' : (form.email.$error.required && !form.email.$pristine) || (form.email.$error.required && submitted) || (form.email.$error.pattern && !form.email.$error.required)}" required />
+                        <p ng-show="(form.email.$error.required && !form.email.$pristine) || (form.email.$error.required && submitted)" class="form-text invalid-feedback m-0">E-mail é obrigatório.</p>
+                        <p ng-show="(form.email.$error.pattern && !form.email.$error.required && !form.email.$pristine) || (form.email.$error.pattern && submitted)" class="form-text invalid-feedback m-0">Formato incorreto.</p>
                       </div>
                       <div class="form-group col-sm-4">
-                        <input id="phone" type="text" class="form-control form-control-sm" ng-model="userForm.phone" placeholder="Telefone" required />
+                        <input id="phone" name="phone" maxlength="15" type="tel" pattern="\([0-9]{2}\) [0-9]{4,6}-[0-9]{3,4}$" class="form-control form-control-sm" ng-model="userForm.phone" placeholder="Telefone" ng-class="{'is-invalid' : (form.phone.$error.required && !form.phone.$pristine) || (form.phone.$error.required && submitted)}" required />
+                        <p ng-show="(form.phone.$error.required && !form.phone.$pristine) || submitted" class="form-text invalid-feedback m-0">Telefone é obrigatório.</p>
                       </div>
                       <div class="form-group col-sm-12">
-                        <input id="adress" type="text" class="form-control form-control-sm" ng-model="userForm.adress" placeholder="Rua" required />
+                        <input id="adress" name="adress" type="text" class="form-control form-control-sm" ng-model="userForm.adress" placeholder="Endereço (rua, número...)" ng-class="{'is-invalid' : (form.adress.$error.required && !form.adress.$pristine) || (form.adress.$error.required && submitted)}" required />
+                        <p ng-show="(form.adress.$error.required && !form.adress.$pristine) || submitted" class="form-text invalid-feedback m-0">Endereço é obrigatório.</p>
                       </div>
-                      <div class="form-group col-sm-2">
-                        <input id="state" type="text" class="form-control form-control-sm" ng-model="userForm.state" placeholder="Estado" required />
-                      </div>
-                      <div class="form-group col-sm-6">
-                        <input id="city" type="text" class="form-control form-control-sm" ng-model="userForm.city" placeholder="Cidade" required />
+                      <div class="form-group col-sm-3">
+                        <select id="state" name="state" class="form-control text-secondary form-control-sm custom-select" ng-model="userForm.state"
+                            ng-options="value.stateId as value.stateName for value in stateList" placeholder="UF" ng-class="{'is-invalid' : (form.state.$error.required && !form.state.$pristine) || (form.state.$error.required && submitted)}" required >
+                          <option class="text-dark" value="">UF</option>
+                        </select>
+                        <p ng-show="(form.state.$error.required && !form.state.$pristine) || submitted" class="form-text invalid-feedback m-0">UF é obrigatório.</p>
+                        <!--<input id="state" name="state" type="text" class="form-control form-control-sm" ng-model="userForm.state" placeholder="UF" ng-class="{'is-invalid' : (form.state.$invalid && !form.state.$pristine) || (form.state.$invalid && submitted)}" required />
+                        <p ng-show="(form.state.$invalid && !form.state.$pristine) || submitted" class="form-text invalid-feedback m-0">UF é obrigatório.</p>-->                      </div>
+                      <div class="form-group col-sm-5">
+                        <input id="city" name="city" type="text" class="form-control form-control-sm" ng-model="userForm.city" placeholder="Cidade" ng-class="{'is-invalid' : (form.city.$error.required && !form.city.$pristine) || (form.city.$error.required && submitted)}" required />
+                        <p ng-show="(form.city.$error.required && !form.city.$pristine) || submitted" class="form-text invalid-feedback m-0">Cidade é obrigatório.</p>
                       </div>
                       <div class="form-group col-sm-4">
-                        <input id="neighborhood" type="text" class="form-control form-control-sm" ng-model="userForm.neighborhood" placeholder="Bairro" required />
+                        <input id="neighborhood" name="neighborhood" type="text" class="form-control form-control-sm" ng-model="userForm.neighborhood" placeholder="Bairro" ng-class="{'is-invalid' : (form.neighborhood.$error.required && !form.neighborhood.$pristine) || (form.neighborhood.$error.required && submitted)}" required />
+                        <p ng-show="(form.neighborhood.$error.required && !form.neighborhood.$pristine) || submitted" class="form-text invalid-feedback m-0">Bairro é obrigatório.</p>
                       </div>
                       <!-- Checkbox para manter a dialog aberta -->
-                      <div class="form-group col-sm-12">
+                      <div class="form-group col-sm-12" ng-class="{'m-0' : isEdit}">
                           <div class="custom-control custom-checkbox" ng-show="!isEdit">
-                            <input type="checkbox" class="form-control form-control-sm custom-control-input" ng-model="keepOpen" id="keepOpen">
+                            <input type="checkbox" class="form-control form-control-sm custom-control-input" ng-model="keepOpen" id="keepOpen" novalidate />
                             <label class="custom-control-label" for="keepOpen">Manter aberto</label>
                           </div>
                       </div>
@@ -115,15 +138,15 @@
       <div id="deleteUser" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
-          <!-- Modal content-->
+          <!-- Modal Excluir-->
           <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Excluir Usuário</h4>
+                <h4 class="modal-title text-dark">Excluir Usuário</h4>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
               <span>Tem certeza que deseja excluir "</span><strong>{{userForm.name}}</strong><span>"?</span>
-              <p>Esta ação não poderá ser desfeita.</p>
+              <p class="m-0">Esta ação não poderá ser desfeita.</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteUser()">Excluir</button>
@@ -140,6 +163,7 @@
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="js/jquery.maskedinput.min.js"></script>
     
     <script src="js/bootstrap.min.js"></script>
     <script src="js/angular.min.js"></script>
