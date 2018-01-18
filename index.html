@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+
+    <title>RegisTree</title>
+  </head>
+  <body ng-app="registree" ng-controller="registreeController">
+    <div class="container table-responsive">
+      <hr>
+      <div class="clearfix mb-2">
+        <h4 class="float-left">Usuários</h4>
+        <button type="button" class="btn btn-info btn-sm  float-right" data-toggle="modal" data-target="#userModal" ng-click="scopeClear()">Novo Usuário</button>
+      </div>
+      
+      <!-- Alert Message -->
+      <div class="alert alert-success" ng-if="message">
+        <a href="#" class="close" ng-click="clearMessage()">&times;</a>
+        {{message}}
+      </div>
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Sobrenome</th>
+            <th>E-mail</th>
+            <th></th>
+	          <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in userList">
+            <td>{{user.name}}</td>
+            <td>{{user.lastname}}</td>
+            <td>{{user.email}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm text-light" data-toggle="modal" data-target="#userModal" ng-click="selectUser(user)">Editar</button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteUser" ng-click="selectUser(user)">Excluir</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <!-- Modal Add User -->
+      <div id="userModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+        
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">{{title}} Usuário</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form name="form" ng-submit="saveUser(form.$valid)" novalidate>
+                <div class="form-row">
+                      <div class="form-group col-sm-4" ng-class="{ 'has-error' : form.name.$invalid && !form.name.$pristine }">
+                        <input id="name" name="name" type="text" ng-minlength="3" class="form-control form-control-sm" ng-model="userForm.name" placeholder="Nome" required />
+                        <p ng-show="{submitted}" class="help-block">Username no mínimo 3 caracteres.{{submitted}}</p>
+                      </div>
+                      <div class="form-group col-sm-8">
+                        <input id="lastname" type="text" class="form-control form-control-sm" ng-model="userForm.lastname" placeholder="Sobrenome" required />
+                      </div>
+                      <div class="form-group col-sm-8">
+                        <input id="email" type="email" class="form-control form-control-sm" ng-model="userForm.email" placeholder="E-mail" required />
+                      </div>
+                      <div class="form-group col-sm-4">
+                        <input id="phone" type="text" class="form-control form-control-sm" ng-model="userForm.phone" placeholder="Telefone" required />
+                      </div>
+                      <div class="form-group col-sm-12">
+                        <input id="adress" type="text" class="form-control form-control-sm" ng-model="userForm.adress" placeholder="Rua" required />
+                      </div>
+                      <div class="form-group col-sm-2">
+                        <input id="state" type="text" class="form-control form-control-sm" ng-model="userForm.state" placeholder="Estado" required />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <input id="city" type="text" class="form-control form-control-sm" ng-model="userForm.city" placeholder="Cidade" required />
+                      </div>
+                      <div class="form-group col-sm-4">
+                        <input id="neighborhood" type="text" class="form-control form-control-sm" ng-model="userForm.neighborhood" placeholder="Bairro" required />
+                      </div>
+                      <!-- Checkbox para manter a dialog aberta -->
+                      <div class="form-group col-sm-12">
+                          <div class="custom-control custom-checkbox" ng-show="!isEdit">
+                            <input type="checkbox" class="form-control form-control-sm custom-control-input" ng-model="keepOpen" id="keepOpen">
+                            <label class="custom-control-label" for="keepOpen">Manter aberto</label>
+                          </div>
+                      </div>
+                </div>
+                
+                <div class="modal-footer px-0 py-0 pt-3">
+                  <div class="">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
+                  </div>
+                  
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <!-- Modal -->
+      <div id="deleteUser" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Excluir Usuário</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <span>Tem certeza que deseja excluir "</span><strong>{{userForm.name}}</strong><span>"?</span>
+              <p>Esta ação não poderá ser desfeita.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteUser()">Excluir</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-animate.min.js"></script>
+    
+    <script src="js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+
+    <script src="js/main-app.js"></script>
+
+  </body>
+</html>
