@@ -12,6 +12,10 @@
     min-height: 600px;
 }
 
+.table-hover tbody tr.userList-empty:hover{
+    background-color: transparent;
+}
+
 .table-overflow {
     max-height:450px;
     overflow-x:auto;

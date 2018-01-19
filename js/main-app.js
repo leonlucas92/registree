@@ -12,7 +12,7 @@ app.controller("registreeController", function($scope, $timeout){
         city: "Joinville",
         adress: "Rua Teste, 123",
         neighborhood: "Vila Teste"}
-    ];
+    ]; 
 
     /**Lista de estados */
     $scope.stateList = [
@@ -72,8 +72,8 @@ app.controller("registreeController", function($scope, $timeout){
                 $scope.userList.push($scope.userForm);
                 $scope.message = "Usuário criado com sucesso!";
                 $scope.clearMessage();
+                $scope.userListSize();
             }
-            
             $scope.userForm = {};
             $scope.isEdit = false;
 
@@ -108,6 +108,8 @@ app.controller("registreeController", function($scope, $timeout){
         $scope.userList.splice($scope.userList.indexOf($scope.selectedUser), 1);
         $scope.message = "Usuário excluido com sucesso!";
         $scope.clearMessage();
+
+        $scope.userListSize();
     };
 
     /**função limpar form */
@@ -131,4 +133,9 @@ app.controller("registreeController", function($scope, $timeout){
             //$scope.message = "";
         }, 3000);
     };
+
+    /**Função que verifica se a tabela possui registro */
+    $scope.userListSize = function(){
+        $scope.empty = $scope.userList.length == 0;
+    }
 });
