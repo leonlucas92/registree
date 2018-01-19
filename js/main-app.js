@@ -13,6 +13,19 @@ app.controller("registreeController", function($scope, $timeout){
         adress: "Rua Teste, 123",
         neighborhood: "Vila Teste"}
     ];
+    
+    for(var i = 0; i < 8; i++){
+        var user = {name: "Teste",
+        lastname: "Testencio",
+        email: "teste@testmail.com",
+        phone: "(47) 98888-9999",
+        state: 24,
+        city: "Joinville",
+        adress: "Rua Teste, 123",
+        neighborhood: "Vila Teste"};
+
+        $scope.userList.push(user);
+    }
 
     /**Lista de estados */
     $scope.stateList = [

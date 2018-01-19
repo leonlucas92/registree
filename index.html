@@ -11,54 +11,55 @@
 
     <title>RegisTree</title>
   </head>
-  <body ng-controller="registreeController" class="bg-light pt-5">
+  <body ng-controller="registreeController" class="bg-light pt-5 pb-5 mb-5">
     <nav class="navbar bg-white fixed-bottom border border-left-0 border-right-0">
-      <a class="navbar-brand text-primary" href="#">RegisTree</a>
+      <a class="navbar-brand text-primary" href="#">Registree</a>
       <div class="float-right">
           <p class="m-0">Criado por Augusto Lucas :)</p>
           <p class="font-weight-light m-0">Todos os direitos reservados.</p>
       </div>
-     
-           
     </nav>
     
-    <div class="main container w-50 h-50 table-responsive border border-secondary rounded bg-white">
-      
+    <div class="main container w-50 h-50 mt-5 mb-5 border border-secondary rounded bg-white">
+      <!-- Alert Message -->
+      <div class="alert alert-success position-fixed d-inline-flex mt-2" ng-show="isVisible">
+        <!--<a href="#" class="close" data-dismiss="div" ng-click="clearMessage()">&times;</a>-->
+        <span>{{message}}</span>
+      </div>
+
       <div class="clearfix mt-3 mb-3">
         <h4 class="float-left text-info">Usuários</h4>
         <button type="button" class="btn btn-info btn-sm float-right" data-toggle="modal" data-target="#userModal" ng-click="formClear(form)">Novo Usuário</button>
       </div>
       
-      <!-- Alert Message -->
-      <div class="alert alert-success zindex-popover" ng-show="isVisible">
-        <!--<a href="#" class="close" data-dismiss="div" ng-click="clearMessage()">&times;</a>-->
-        {{message}}
+      <table class="table table-hover w-100 table-fixed col-sm-5">
+          <thead>
+            <tr class="">
+              <th class="col-2">Nome</th>
+              <th class="col-3">Sobrenome</th>
+              <th class="col-3">E-mail</th>
+              <th class="col-2">&nbsp;</th>
+              <th class="col-2">&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody class="table-overflow">
+            <tr ng-repeat="user in userList">
+              <td class="td-name col-2">{{user.name}}</td>
+              <td class="td-name col-3">{{user.lastname}}</td>
+              <td class="td-email col-3">{{user.email}}</td>
+              <td class="col-2">
+                <button type="button" class="btn btn-warning btn-sm text-light" data-toggle="modal" data-target="#userModal" ng-click="selectUser(user)">Editar</button>
+              </td>
+              <td class="col-2">
+                <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteUser" ng-click="selectUser(user)">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      <div class=" table-responsive-lg table-overflow">
+        
       </div>
-
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Sobrenome</th>
-            <th>E-mail</th>
-            <th></th>
-	          <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="user in userList">
-            <td>{{user.name}}</td>
-            <td>{{user.lastname}}</td>
-            <td>{{user.email}}</td>
-            <td>
-              <button type="button" class="btn btn-warning btn-sm text-light" data-toggle="modal" data-target="#userModal" ng-click="selectUser(user)">Editar</button>
-            </td>
-            <td>
-              <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteUser" ng-click="selectUser(user)">Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      
       
       <!-- Modal Add User -->
       <div id="userModal" class="modal fade" role="dialog">

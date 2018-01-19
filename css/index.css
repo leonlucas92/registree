@@ -12,3 +12,28 @@
     min-height: 600px;
 }
 
+.table-overflow {
+    max-height:450px;
+    overflow-x:auto;
+}
+
+.td-name, .td-email{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;  
+}
+.th-title{ min-width: 90px; }
+.td-email{ max-width: 150px; }
+
+thead, tbody, tr, td, th { display: block; }
+
+tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+tbody td, thead th {
+    float: left;
+}
